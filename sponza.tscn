@@ -1,0 +1,76 @@
+[gd_scene load_steps=11 format=3 uid="uid://mjabq3tkrgyb"]
+
+[ext_resource type="Script" path="res://sponza.gd" id="1_858uv"]
+[ext_resource type="PackedScene" uid="uid://cbm7jxh6gwmk8" path="res://sponza/Sponza.dae" id="1_xlmvp"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ix87o"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_v35ep"]
+sky_material = SubResource("ProceduralSkyMaterial_ix87o")
+
+[sub_resource type="Environment" id="Environment_nlfys"]
+background_mode = 1
+sky = SubResource("Sky_v35ep")
+ambient_light_source = 2
+ambient_light_color = Color(1, 1, 1, 1)
+ambient_light_energy = 0.6
+ssr_enabled = true
+ssr_max_steps = 512
+ssao_enabled = true
+ssao_intensity = 4.0
+sdfgi_bounce_feedback = 1.0
+sdfgi_cascades = 8
+sdfgi_min_cell_size = 0.02
+sdfgi_cascade0_distance = 1.28
+sdfgi_max_distance = 327.68
+sdfgi_energy = 3.0
+glow_blend_mode = 1
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_wyafx"]
+size = Vector2(32, 24)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v1uaf"]
+metallic = 1.0
+roughness = 0.33
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_77v7u"]
+dof_blur_far_distance = 0.01
+dof_blur_far_transition = -1.0
+dof_blur_amount = 1.0
+
+[sub_resource type="TorusMesh" id="TorusMesh_2ien2"]
+inner_radius = 0.05
+outer_radius = 0.1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fox34"]
+emission_enabled = true
+emission = Color(0.686275, 1, 0, 1)
+
+[node name="Node3D" type="Node3D"]
+script = ExtResource("1_858uv")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0.19474, 0.168408, 0.966289, -0.460521, 0.885514, -0.0615197, 0, 0, 0)
+visible = false
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_nlfys")
+
+[node name="Sponza" parent="." instance=ExtResource("1_xlmvp")]
+
+[node name="Plane" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_wyafx")
+surface_material_override/0 = SubResource("StandardMaterial3D_v1uaf")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(-0.687103, -0.0162866, -0.726377, 0, 0.999749, -0.022416, 0.72656, -0.0154021, -0.686931, 0.835761, 0.825311, -1.30658)
+attributes = SubResource("CameraAttributesPractical_77v7u")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(-0.576806, -0.741616, 0.342492, -2.98023e-08, 0.419268, 0.907863, -0.816882, 0.52366, -0.241836, 4.16194, 0.632311, -0.813983)
+visible = false
+mesh = SubResource("TorusMesh_2ien2")
+surface_material_override/0 = SubResource("StandardMaterial3D_fox34")
